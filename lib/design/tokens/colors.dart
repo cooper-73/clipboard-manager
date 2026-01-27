@@ -39,7 +39,4 @@ abstract class AppColors {
   // Empty state
   static const emptyIcon = Color(0xFF6B7280);
   static const emptyGlow = Color(0x33135BEC);
-
-  // Header / footer
-  static const chrome = Color(0xCC101622);
 }
