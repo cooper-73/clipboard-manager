@@ -28,6 +28,9 @@
 		33CC10F32044A3C60003C045 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F22044A3C60003C045 /* Assets.xcassets */; };
 		33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F42044A3C60003C045 /* MainMenu.xib */; };
 		33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CC11122044BFA00003C045 /* MainFlutterWindow.swift */; };
+		F1149A192F2C690200E93A6A /* ClipboardEventChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1149A172F2C690200E93A6A /* ClipboardEventChannel.swift */; };
+		F1149A1D2F2C691000E93A6A /* ClipboardListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1149A1A2F2C691000E93A6A /* ClipboardListener.swift */; };
+		F1149A1E2F2C691000E93A6A /* ClipboardStreamHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1149A1B2F2C691000E93A6A /* ClipboardStreamHandler.swift */; };
 		F2F3481C82AC9814759B1773 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F2C2255016C78A43136D29C /* Pods_Runner.framework */; };
 /* End PBXBuildFile section */
 
@@ -88,6 +91,9 @@
 		D9F7B251E81DC1440DEC6539 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		E3083EB7EC227481FDC1B5E6 /* Pods_RunnerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunnerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F033E38A26D0191D48758D09 /* Pods-RunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		F1149A172F2C690200E93A6A /* ClipboardEventChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardEventChannel.swift; sourceTree = "<group>"; };
+		F1149A1A2F2C691000E93A6A /* ClipboardListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardListener.swift; sourceTree = "<group>"; };
+		F1149A1B2F2C691000E93A6A /* ClipboardStreamHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardStreamHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,6 +181,8 @@
 		33FAB671232836740065AC1E /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				F1149A1C2F2C691000E93A6A /* Clipboard */,
+				F1149A182F2C690200E93A6A /* Channels */,
 				33CC10F02044A3C60003C045 /* AppDelegate.swift */,
 				33CC11122044BFA00003C045 /* MainFlutterWindow.swift */,
 				33E51913231747F40026EE4D /* DebugProfile.entitlements */,
@@ -195,7 +203,6 @@
 				D1D356A298FCAF83C873A955 /* Pods-RunnerTests.release.xcconfig */,
 				40519AB1EC826D034F7A9ADF /* Pods-RunnerTests.profile.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -206,6 +213,23 @@
 				E3083EB7EC227481FDC1B5E6 /* Pods_RunnerTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F1149A182F2C690200E93A6A /* Channels */ = {
+			isa = PBXGroup;
+			children = (
+				F1149A172F2C690200E93A6A /* ClipboardEventChannel.swift */,
+			);
+			path = Channels;
+			sourceTree = "<group>";
+		};
+		F1149A1C2F2C691000E93A6A /* Clipboard */ = {
+			isa = PBXGroup;
+			children = (
+				F1149A1A2F2C691000E93A6A /* ClipboardListener.swift */,
+				F1149A1B2F2C691000E93A6A /* ClipboardStreamHandler.swift */,
+			);
+			path = Clipboard;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -438,8 +462,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */,
+				F1149A1D2F2C691000E93A6A /* ClipboardListener.swift in Sources */,
+				F1149A1E2F2C691000E93A6A /* ClipboardStreamHandler.swift in Sources */,
 				33CC10F12044A3C60003C045 /* AppDelegate.swift in Sources */,
 				335BBD1B22A9A15E00E9071D /* GeneratedPluginRegistrant.swift in Sources */,
+				F1149A192F2C690200E93A6A /* ClipboardEventChannel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
