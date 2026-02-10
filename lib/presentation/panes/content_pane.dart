@@ -11,7 +11,9 @@ class ContentPane extends StatelessWidget {
       color: context.colors.surface,
       child: const SizedBox(
         width: double.infinity,
-        child: Center(child: EmptyClipboardHistory()),
+        child: Center(
+          child: ClipboardPane(),
+        ),
       ),
     );
   }

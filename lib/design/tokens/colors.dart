@@ -22,7 +22,7 @@ abstract class AppColors {
   static const successContainer = Color(0x1A10B981);
 
   // Text
-  static const textPrimary = Color(0xFFFFFFFF);
+  static const textPrimary = Color(0xFFD1D5DB);
   static const textSecondary = Color(0xFF92A4C9);
   static const textTertiary = Color(0xFF5D6B82);
   static const textDisabled = Color(0xFF6B7280);

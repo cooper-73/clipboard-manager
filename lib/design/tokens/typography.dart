@@ -39,7 +39,7 @@ abstract class AppTypography {
     fontFamily: sans,
     fontSize: sm,
     fontWeight: FontWeight.w400,
-    height: 1.4,
+    height: 1,
     color: AppColors.textTertiary,
   );
 
@@ -59,7 +59,7 @@ abstract class AppTypography {
     fontFamily: sans,
     fontSize: xs,
     fontWeight: FontWeight.w500,
-    height: 1.2,
+    height: 1,
     color: AppColors.textTertiary,
   );
 
