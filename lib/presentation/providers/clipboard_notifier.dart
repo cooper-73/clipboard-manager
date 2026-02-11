@@ -35,6 +35,14 @@ class ClipboardNotifier extends ChangeNotifier {
     _subscription = null;
   }
 
+  Future<void> copyItem(String value) async {
+    try {
+      await _clipboardRepository.copyItem(value);
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
   @override
   void dispose() {
     stopListening();

@@ -1,5 +1,6 @@
 import 'package:clipboard_manager/core/core.dart';
 import 'package:clipboard_manager/domain/domain.dart';
+import 'package:flutter/services.dart';
 
 class ClipboardRepositoryImpl implements ClipboardRepository {
   ClipboardRepositoryImpl(this._channel);
@@ -12,4 +13,8 @@ class ClipboardRepositoryImpl implements ClipboardRepository {
         .map(ClipboardItem.fromMap)
         .distinct((a, b) => a.value == b.value);
   }
+
+  @override
+  Future<void> copyItem(String value) =>
+      Clipboard.setData(ClipboardData(text: value));
 }

@@ -3,6 +3,7 @@ import 'package:clipboard_manager/design/design.dart';
 import 'package:clipboard_manager/domain/domain.dart';
 import 'package:clipboard_manager/presentation/presentation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ClipboardEntryCard extends StatefulWidget {
   const ClipboardEntryCard({
@@ -153,7 +154,7 @@ class _ClipboardEntryContent extends StatelessWidget {
           if (isSelected)
             CopyButton(
               onTap: () {
-                debugPrint('Copy button pressed');
+                context.read<ClipboardNotifier>().copyItem(clipboardItem.value);
               },
             ),
         ],
