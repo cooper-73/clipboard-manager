@@ -1,15 +1,59 @@
 import 'package:clipboard_manager/core/core.dart';
 import 'package:clipboard_manager/design/design.dart';
 import 'package:clipboard_manager/domain/domain.dart';
+import 'package:clipboard_manager/presentation/presentation.dart';
 import 'package:flutter/material.dart';
 
-class ClipboardEntryCard extends StatelessWidget {
+class ClipboardEntryCard extends StatefulWidget {
   const ClipboardEntryCard({
     super.key,
     required this.clipboardItem,
   });
 
   final ClipboardItem clipboardItem;
+
+  @override
+  State<ClipboardEntryCard> createState() => _ClipboardEntryCardState();
+}
+
+class _ClipboardEntryCardState extends State<ClipboardEntryCard> {
+  final _isHovered = ValueNotifier<bool>(false);
+
+  @override
+  void dispose() {
+    _isHovered.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => _isHovered.value = true,
+      onExit: (_) => _isHovered.value = false,
+      child: ValueListenableBuilder(
+        valueListenable: _isHovered,
+        builder: (_, isHovered, __) {
+          return _ClipboardEntryContent(
+            clipboardItem: widget.clipboardItem,
+            isSelected: isHovered,
+            isHovered: isHovered,
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _ClipboardEntryContent extends StatelessWidget {
+  const _ClipboardEntryContent({
+    required this.clipboardItem,
+    required this.isSelected,
+    required this.isHovered,
+  });
+
+  final ClipboardItem clipboardItem;
+  final bool isSelected;
+  final bool isHovered;
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +63,16 @@ class ClipboardEntryCard extends StatelessWidget {
         vertical: AppSpacing.sm,
       ),
       decoration: BoxDecoration(
+        color: isSelected
+            ? context.listColors.itemSelected
+            : isHovered
+            ? context.listColors.itemHover
+            : Colors.transparent,
         borderRadius: const BorderRadius.all(AppRadius.md),
         border: Border.all(
-          color: Colors.transparent,
+          color: isSelected
+              ? context.listColors.itemSelectedBorder
+              : Colors.transparent,
         ),
       ),
       child: Row(
@@ -31,13 +82,14 @@ class ClipboardEntryCard extends StatelessWidget {
             dimension: 36,
             child: DecoratedBox(
               decoration: BoxDecoration(
+                color: context.colors.surface,
                 borderRadius: const BorderRadius.all(AppRadius.sm),
                 border: Border.all(color: context.colors.outlineVariant),
               ),
               child: Icon(
                 Icons.description_outlined,
                 size: 20,
-                color: context.colors.textSecondary,
+                color: isHovered ? Colors.white : context.colors.textSecondary,
               ),
             ),
           ),
@@ -50,16 +102,23 @@ class ClipboardEntryCard extends StatelessWidget {
                   clipboardItem.value,
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
-                  style: context.typography.body,
+                  style: context.typography.body.copyWith(
+                    color: isHovered ? Colors.white : null,
+                  ),
                 ),
                 Row(
                   spacing: AppSpacing.sm,
                   children: [
                     DecoratedBox(
                       decoration: BoxDecoration(
+                        color: isSelected
+                            ? context.colors.primary.withValues(alpha: 0.1)
+                            : Colors.transparent,
                         borderRadius: const BorderRadius.all(AppRadius.xs),
                         border: Border.all(
-                          color: context.colors.outlineVariant,
+                          color: isSelected
+                              ? Colors.transparent
+                              : context.colors.outlineVariant,
                         ),
                       ),
                       child: Padding(
@@ -69,19 +128,34 @@ class ClipboardEntryCard extends StatelessWidget {
                         ),
                         child: Text(
                           'Text',
-                          style: context.typography.keyHint,
+                          style: context.typography.keyHint.copyWith(
+                            color: isHovered ? context.colors.primary : null,
+                          ),
                         ),
                       ),
                     ),
                     Text(
                       clipboardItem.createdAt.timeAgo,
-                      style: context.typography.tertiary,
+                      style: isHovered
+                          ? context.typography.secondary
+                          : context.typography.tertiary,
                     ),
                   ],
                 ),
               ],
             ),
           ),
+          if (isHovered)
+            Text(
+              'Press ↵',
+              style: context.typography.tertiary,
+            ),
+          if (isSelected)
+            CopyButton(
+              onTap: () {
+                debugPrint('Copy button pressed');
+              },
+            ),
         ],
       ),
     );
