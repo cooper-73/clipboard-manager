@@ -1,0 +1,1 @@
+const kMaxClipboardItems = 50;

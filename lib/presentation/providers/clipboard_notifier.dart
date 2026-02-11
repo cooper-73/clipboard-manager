@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:clipboard_manager/core/core.dart';
 import 'package:clipboard_manager/domain/domain.dart';
 import 'package:flutter/foundation.dart';
 
@@ -8,9 +9,8 @@ class ClipboardNotifier extends ChangeNotifier {
 
   final ClipboardRepository _clipboardRepository;
 
-  final List<ClipboardItem> _clipboardItems = [];
-  List<ClipboardItem> get clipboardItems =>
-      List.unmodifiable(_clipboardItems.reversed);
+  List<ClipboardItem> _clipboardItems = [];
+  List<ClipboardItem> get clipboardItems => List.unmodifiable(_clipboardItems);
 
   StreamSubscription<ClipboardItem>? _subscription;
 
@@ -19,7 +19,12 @@ class ClipboardNotifier extends ChangeNotifier {
 
     _subscription = _clipboardRepository.clipboardChanges().listen(
       (clipboardItem) {
-        _clipboardItems.add(clipboardItem);
+        // Add the clipboard item to the top of the list and remove the last
+        // one if there are more than kMaxClipboardItems
+        _clipboardItems = [
+          clipboardItem,
+          ..._clipboardItems.take(kMaxClipboardItems - 1),
+        ];
         notifyListeners();
       },
     );
