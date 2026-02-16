@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 class CopyButton extends StatefulWidget {
   const CopyButton({
     super.key,
+    required this.isCopied,
     required this.onTap,
   });
 
+  final bool isCopied;
   final VoidCallback onTap;
 
   @override
@@ -37,7 +39,9 @@ class CopyButtonState extends State<CopyButton> {
             builder: (_, isHovered, child) {
               return DecoratedBox(
                 decoration: BoxDecoration(
-                  color: isHovered
+                  color: widget.isCopied
+                      ? context.colors.success.withValues(alpha: 0.2)
+                      : isHovered
                       ? context.colors.primary.withValues(alpha: 0.9)
                       : context.colors.primary,
                   borderRadius: const BorderRadius.all(AppRadius.sm),
@@ -52,15 +56,20 @@ class CopyButtonState extends State<CopyButton> {
               child: Row(
                 spacing: AppSpacing.xs,
                 children: [
-                  const Icon(
-                    Icons.copy_rounded,
+                  Icon(
+                    widget.isCopied ? Icons.check_circle : Icons.copy_rounded,
                     size: AppTypography.lg,
-                    color: Colors.white,
+                    color: widget.isCopied
+                        ? context.colors.success
+                        : Colors.white,
                   ),
                   Text(
-                    'Copy',
+                    widget.isCopied ? 'Copied!' : 'Copy',
                     style: context.typography.hint.copyWith(
-                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      color: widget.isCopied
+                          ? context.colors.success
+                          : Colors.white,
                     ),
                   ),
                 ],

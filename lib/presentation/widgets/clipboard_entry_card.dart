@@ -19,10 +19,12 @@ class ClipboardEntryCard extends StatefulWidget {
 
 class _ClipboardEntryCardState extends State<ClipboardEntryCard> {
   final _isHovered = ValueNotifier<bool>(false);
+  final _isCopied = ValueNotifier<bool>(false);
 
   @override
   void dispose() {
     _isHovered.dispose();
+    _isCopied.dispose();
     super.dispose();
   }
 
@@ -34,10 +36,27 @@ class _ClipboardEntryCardState extends State<ClipboardEntryCard> {
       child: ValueListenableBuilder(
         valueListenable: _isHovered,
         builder: (_, isHovered, __) {
-          return _ClipboardEntryContent(
-            clipboardItem: widget.clipboardItem,
-            isSelected: isHovered,
-            isHovered: isHovered,
+          return ValueListenableBuilder(
+            valueListenable: _isCopied,
+            builder: (context, isCopied, child) {
+              return _ClipboardEntryContent(
+                clipboardItem: widget.clipboardItem,
+                isSelected: isHovered,
+                isHovered: isHovered,
+                isCopied: isCopied,
+                onCopyItem: () {
+                  context.read<ClipboardNotifier>().copyItem(
+                    widget.clipboardItem.value,
+                  );
+
+                  _isCopied.value = true;
+
+                  Future.delayed(const Duration(seconds: 1), () {
+                    _isCopied.value = false;
+                  });
+                },
+              );
+            },
           );
         },
       ),
@@ -50,11 +69,15 @@ class _ClipboardEntryContent extends StatelessWidget {
     required this.clipboardItem,
     required this.isSelected,
     required this.isHovered,
+    required this.isCopied,
+    required this.onCopyItem,
   });
 
   final ClipboardItem clipboardItem;
   final bool isSelected;
   final bool isHovered;
+  final bool isCopied;
+  final VoidCallback onCopyItem;
 
   @override
   Widget build(BuildContext context) {
@@ -64,14 +87,18 @@ class _ClipboardEntryContent extends StatelessWidget {
         vertical: AppSpacing.sm,
       ),
       decoration: BoxDecoration(
-        color: isSelected
+        color: isCopied
+            ? context.colors.successContainer
+            : isSelected
             ? context.listColors.itemSelected
             : isHovered
             ? context.listColors.itemHover
             : Colors.transparent,
         borderRadius: const BorderRadius.all(AppRadius.md),
         border: Border.all(
-          color: isSelected
+          color: isCopied
+              ? context.colors.success.withValues(alpha: 0.2)
+              : isSelected
               ? context.listColors.itemSelectedBorder
               : Colors.transparent,
         ),
@@ -90,7 +117,11 @@ class _ClipboardEntryContent extends StatelessWidget {
               child: Icon(
                 Icons.description_outlined,
                 size: 20,
-                color: isHovered ? Colors.white : context.colors.textSecondary,
+                color: isCopied
+                    ? context.colors.success
+                    : isHovered
+                    ? Colors.white
+                    : context.colors.textSecondary,
               ),
             ),
           ),
@@ -104,7 +135,7 @@ class _ClipboardEntryContent extends StatelessWidget {
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: context.typography.body.copyWith(
-                    color: isHovered ? Colors.white : null,
+                    color: isCopied || isHovered ? Colors.white : null,
                   ),
                 ),
                 Row(
@@ -112,12 +143,14 @@ class _ClipboardEntryContent extends StatelessWidget {
                   children: [
                     DecoratedBox(
                       decoration: BoxDecoration(
-                        color: isSelected
+                        color: isCopied
+                            ? Colors.white.withValues(alpha: 0.05)
+                            : isSelected
                             ? context.colors.primary.withValues(alpha: 0.1)
                             : Colors.transparent,
                         borderRadius: const BorderRadius.all(AppRadius.xs),
                         border: Border.all(
-                          color: isSelected
+                          color: isCopied || isSelected
                               ? Colors.transparent
                               : context.colors.outlineVariant,
                         ),
@@ -130,14 +163,18 @@ class _ClipboardEntryContent extends StatelessWidget {
                         child: Text(
                           'Text',
                           style: context.typography.keyHint.copyWith(
-                            color: isHovered ? context.colors.primary : null,
+                            color: isCopied
+                                ? context.colors.textSecondary
+                                : isHovered
+                                ? context.colors.primary
+                                : null,
                           ),
                         ),
                       ),
                     ),
                     Text(
                       clipboardItem.createdAt.timeAgo,
-                      style: isHovered
+                      style: isCopied || isHovered
                           ? context.typography.secondary
                           : context.typography.tertiary,
                     ),
@@ -146,16 +183,15 @@ class _ClipboardEntryContent extends StatelessWidget {
               ],
             ),
           ),
-          if (isHovered)
+          if (isHovered && !isCopied)
             Text(
               'Press ↵',
               style: context.typography.tertiary,
             ),
-          if (isSelected)
+          if (isCopied || isSelected)
             CopyButton(
-              onTap: () {
-                context.read<ClipboardNotifier>().copyItem(clipboardItem.value);
-              },
+              isCopied: isCopied,
+              onTap: onCopyItem,
             ),
         ],
       ),

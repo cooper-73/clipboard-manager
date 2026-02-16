@@ -18,13 +18,20 @@ class ClipboardNotifier extends ChangeNotifier {
     if (_subscription != null) return;
 
     _subscription = _clipboardRepository.clipboardChanges().listen(
-      (clipboardItem) {
-        // Add the clipboard item to the top of the list and remove the last
-        // one if there are more than kMaxClipboardItems
+      (newClipboardItem) {
+        /// Updates the list of clipboard items by inserting the new item at
+        /// the beginning.
         _clipboardItems = [
-          clipboardItem,
-          ..._clipboardItems.take(kMaxClipboardItems - 1),
+          newClipboardItem,
+          ..._clipboardItems,
         ];
+
+        /// If the list length exceeds [kMaxClipboardItems], it truncates the
+        /// original list.
+        if (kMaxClipboardItems < clipboardItems.length) {
+          _clipboardItems = _clipboardItems.take(kMaxClipboardItems).toList();
+        }
+
         notifyListeners();
       },
     );
