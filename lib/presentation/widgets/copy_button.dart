@@ -31,7 +31,7 @@ class CopyButtonState extends State<CopyButton> {
       onEnter: (_) => _isHovered.value = true,
       onExit: (_) => _isHovered.value = false,
       child: GestureDetector(
-        onTap: widget.onTap,
+        onTap: widget.isCopied ? null : widget.onTap,
         child: SizedBox(
           height: AppSpacing.xxl,
           child: ValueListenableBuilder(
