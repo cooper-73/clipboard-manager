@@ -7,6 +7,7 @@ part 'clipboard_item_local.g.dart';
 class ClipboardItemLocal {
   Id id = Isar.autoIncrement;
   late String text;
+  @Index()
   late DateTime createdAt;
 }
 
