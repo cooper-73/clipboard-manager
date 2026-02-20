@@ -46,7 +46,7 @@ class _ClipboardEntryCardState extends State<ClipboardEntryCard> {
                 isCopied: isCopied,
                 onCopyItem: () {
                   context.read<ClipboardNotifier>().copyItem(
-                    widget.clipboardItem.value,
+                    widget.clipboardItem.text,
                   );
 
                   _isCopied.value = true;
@@ -131,7 +131,7 @@ class _ClipboardEntryContent extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  clipboardItem.value,
+                  clipboardItem.text,
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: context.typography.body.copyWith(

@@ -11,7 +11,7 @@ class ClipboardRepositoryImpl implements ClipboardRepository {
   Stream<ClipboardItem> clipboardChanges() {
     return _channel.stream
         .map(ClipboardItem.fromMap)
-        .distinct((a, b) => a.value == b.value);
+        .distinct((a, b) => a.text == b.text);
   }
 
   @override
