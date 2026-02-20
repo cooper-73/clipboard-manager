@@ -21,5 +21,21 @@ class ClipboardLocalDatasourceImpl implements ClipboardLocalDatasource {
 
   @override
   Future<void> saveClipboardItem(ClipboardItemLocal item) =>
-      isar.writeTxn(() => isar.clipboardItems.put(item));
+      isar.writeTxn(() async {
+        await isar.clipboardItems.put(item);
+
+        final clipboardItemsCount = await isar.clipboardItems.count();
+
+        if (clipboardItemsCount > kMaxClipboardItems) {
+          final itemsToDelete = await isar.clipboardItems
+              .where()
+              .sortByCreatedAt()
+              .limit(clipboardItemsCount - kMaxClipboardItems)
+              .findAll();
+
+          final idsToDelete = itemsToDelete.map((e) => e.id).toList();
+
+          await isar.clipboardItems.deleteAll(idsToDelete);
+        }
+      });
 }
