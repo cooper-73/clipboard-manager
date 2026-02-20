@@ -8,11 +8,19 @@ class WindowShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      color: context.colors.background,
-      child: const Column(
+      color: context.colors.surface,
+      child: Column(
         children: [
-          Expanded(child: ContentPane()),
-          StatusBar(),
+          Expanded(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(
+                minWidth: AppMetrics.contentMinWidth,
+                maxWidth: AppMetrics.contentMaxWidth,
+              ),
+              child: const ContentPane(),
+            ),
+          ),
+          const StatusBar(),
         ],
       ),
     );

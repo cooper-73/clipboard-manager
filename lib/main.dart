@@ -52,7 +52,14 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppTheme.buildAppTheme(),
-      home: const Scaffold(body: WindowShell()),
+      home: Builder(
+        builder: (context) {
+          return Scaffold(
+            backgroundColor: context.colors.surface,
+            body: const Center(child: WindowShell()),
+          );
+        },
+      ),
     );
   }
 }

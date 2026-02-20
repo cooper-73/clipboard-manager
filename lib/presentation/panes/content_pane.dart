@@ -9,12 +9,7 @@ class ContentPane extends StatelessWidget {
   Widget build(BuildContext context) {
     return ColoredBox(
       color: context.colors.surface,
-      child: const SizedBox(
-        width: double.infinity,
-        child: Center(
-          child: ClipboardPane(),
-        ),
-      ),
+      child: const Center(child: ClipboardPane()),
     );
   }
 }

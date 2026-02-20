@@ -1,4 +1,8 @@
 abstract class AppMetrics {
+  // Content
+  static const contentMinWidth = 640.0;
+  static const contentMaxWidth = 820.0;
+
   // Search
   static const searchFieldHeight = 48.0;
   static const searchIconSize = 22.0;
