@@ -6,6 +6,7 @@ import 'package:clipboard_manager/presentation/presentation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:window_manager/window_manager.dart';
 
 late final PackageInfo appInfo;
 
@@ -15,6 +16,20 @@ void main() async {
   appInfo = await PackageInfo.fromPlatform();
 
   final isarService = await IsarService.init();
+
+  await windowManager.ensureInitialized();
+
+  const WindowOptions windowOptions = WindowOptions(
+    size: AppMetrics.windowInitialSize,
+    minimumSize: AppMetrics.windowMinSize,
+    maximumSize: AppMetrics.windowMaxSize,
+    center: true,
+  );
+
+  await windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.show();
+    await windowManager.focus();
+  });
 
   runApp(
     MultiProvider(

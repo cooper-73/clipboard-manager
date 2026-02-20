@@ -1,4 +1,11 @@
+import 'dart:ui';
+
 abstract class AppMetrics {
+  // Window
+  static const windowInitialSize = Size(720, 560);
+  static const windowMinSize = Size(560, 420);
+  static const windowMaxSize = Size(900, 720);
+
   // Content
   static const contentMinWidth = 640.0;
   static const contentMaxWidth = 820.0;
