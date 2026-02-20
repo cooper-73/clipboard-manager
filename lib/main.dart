@@ -14,22 +14,28 @@ void main() async {
 
   appInfo = await PackageInfo.fromPlatform();
 
+  final isarService = await IsarService.init();
+
   runApp(
     MultiProvider(
       providers: [
         Provider<ClipboardEventChannel>(create: (_) => ClipboardEventChannel()),
+        Provider<ClipboardLocalDatasource>(
+          create: (_) => ClipboardLocalDatasourceImpl(isarService.isar),
+        ),
         Provider<ClipboardRepository>(
           create: (context) {
             final channel = context.read<ClipboardEventChannel>();
+            final localDatasource = context.read<ClipboardLocalDatasource>();
 
-            return ClipboardRepositoryImpl(channel);
+            return ClipboardRepositoryImpl(channel, localDatasource);
           },
         ),
         ChangeNotifierProvider(
           create: (context) {
             final repository = context.read<ClipboardRepository>();
 
-            return ClipboardNotifier(repository)..startListening();
+            return ClipboardNotifier(repository)..init();
           },
         ),
       ],

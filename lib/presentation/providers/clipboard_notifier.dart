@@ -14,7 +14,19 @@ class ClipboardNotifier extends ChangeNotifier {
 
   StreamSubscription<ClipboardItem>? _subscription;
 
-  void startListening() {
+  Future<void> init() async {
+    try {
+      _clipboardItems = await _clipboardRepository.getClipboardItems();
+
+      notifyListeners();
+    } catch (e) {
+      debugPrint(e.toString());
+    } finally {
+      _startListening();
+    }
+  }
+
+  void _startListening() {
     if (_subscription != null) return;
 
     _subscription = _clipboardRepository.clipboardChanges().listen(
